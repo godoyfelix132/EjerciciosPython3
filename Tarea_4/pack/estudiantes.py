@@ -1,5 +1,6 @@
 from mongoengine import *
 
+connect('students')
 
 class Student(Document):
     name = StringField(required=True)
