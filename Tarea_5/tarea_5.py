@@ -25,7 +25,7 @@ class MainWindow(QMainWindow):
     def show_info(self):
         self.ui.textEdit_info.clear()
         s = (self.ui.comboBox_del_mod.currentText())
-        r = re.match('[0-9]*', s)
+        r = re.match('[0-9]+', s)
         try:
             ix = (r.group(0))
             for s, i in zip(Student.objects, range(len(Student.objects))):
@@ -41,7 +41,7 @@ class MainWindow(QMainWindow):
 
     def delete(self):
         s = (self.ui.comboBox_del_mod.currentText())
-        r = re.match('[0-9]*', s)
+        r = re.match('[0-9]+', s)
         ix = (r.group(0))
         for s, i in zip(Student.objects, range(len(Student.objects))):
             if i == int(ix):
@@ -52,7 +52,7 @@ class MainWindow(QMainWindow):
 
     def edit(self):
         s = (self.ui.comboBox_del_mod.currentText())
-        r = re.match('[0-9]*', s)
+        r = re.match('[0-9]+', s)
         ix = (r.group(0))
 
         for s, i in zip(Student.objects, range(len(Student.objects))):
@@ -130,35 +130,3 @@ if __name__ == '__main__':
     window.show()
 
     app.exec_()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# stu1 = Student(name='Felix', email='felix@gmail.com', password='password1')
-# stu2 = Student(name='Luis', email='luis@gmail.com', password='password2')
-# stu3 = Student(name='Mario', email='mario@gmail.com', password='password3')
-# stu4 = Student(name='Juan', email='juan@gmail.com', password='password4')
-# stu5 = Student(name='Jose', email='jose@gmail.com', password='password5')
-# stu1.save()
-# stu2.save()
-# stu3.save()
-# stu4.save()
-# stu5.save()
-
-# out = False
-# while not out:
-#     a = Admin()
-#     out = a.print_menu()
