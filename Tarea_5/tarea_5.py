@@ -25,7 +25,7 @@ class MainWindow(QMainWindow):
     def show_info(self):
         self.ui.textEdit_info.clear()
         s = (self.ui.comboBox_del_mod.currentText())
-        r = re.match('[0-9]*', s)
+        r = re.match('[0-9]+', s)
         try:
             ix = (r.group(0))
             for s, i in zip(Student.objects, range(len(Student.objects))):
