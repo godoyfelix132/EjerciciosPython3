@@ -31,7 +31,7 @@ while True:
                         count += 1
                         i = connection.recv(500)
                         print(i)
-                    time.sleep(1)
+                    time.sleep(0.5)
                     print('done')
                     file.close()
             else:

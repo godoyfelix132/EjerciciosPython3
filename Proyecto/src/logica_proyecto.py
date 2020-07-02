@@ -1,10 +1,8 @@
 from src.estudiante import *
-from PySide2.QtWidgets import QApplication,QMainWindow, QFileDialog
+from PySide2.QtWidgets import QFileDialog
 from PySide2.QtCore import Slot
-from PySide2.QtGui import *
 from src.ui_proyecto import *
 import pickle
-import re
 import socket as s
 import time
 
@@ -15,8 +13,6 @@ class ClientTcp:
     def __init__(self, ip='127.0.0.1', port=35491):
         ip = str(ip)
         port = int(port)
-        print(type(ip), type(port))
-        print(ip, port)
         try:
             self.client = s.socket()
         except OSError as msg:
@@ -45,7 +41,6 @@ class ClientTcp:
         self.client.send(buffer)
 
     def receive(self):
-
         message = self.client.recv(1024)
         print(message)
         return message.decode()
@@ -55,17 +50,15 @@ class ClientTcp:
 
 
 class MainWindow(QMainWindow):
-    __current_student_id = 0
-
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.pushButton_connect.clicked.connect(self.client_connect)
         self.ui.pushButton_send_student.clicked.connect(self.send_student)
-        self.reset_connection()
         self.ui.pushButton_search.clicked.connect(self.open_file)
         self.ui.pushButton_send_file.clicked.connect(self.send_file)
+        self.reset_connection()
 
     def send_file(self):
         filename = self.ui.lineEdit_file.text()
@@ -78,12 +71,11 @@ class MainWindow(QMainWindow):
             self.client.send_file(i)
             count += 1
             i = file.read(500)
-            print(i)
         file.close()
-        time.sleep(1)
-        print('finzip')
+        time.sleep(0.5)
         self.client.send_message('finzip')
-    @Slot()
+        self.ui.label_state.setText('Archivo enviado')
+
     def open_file(self):
         filename = QFileDialog.getOpenFileName(self, 'Abrir archivo', '.', 'Zip Files(*.zip)')
         print(filename[0])
@@ -133,9 +125,8 @@ class MainWindow(QMainWindow):
             if message == 'enviararchivo':
                 self.file_widgets(1)
                 self.student_widgets(0)
-                self.server_widgets(0)
             else:
-                print(f'Messaje enviado no corresponde con enviararchivo')
+                self.ui.label_state.setText('servidor no envió enviararchivo')
         except:
             self.reset_connection()
 
@@ -168,10 +159,4 @@ class MainWindow(QMainWindow):
         else:
             self.reset_connection()
 
-if __name__ == '__main__':
-    app = QApplication()
 
-    window = MainWindow()
-    window.show()
-
-    app.exec_()
